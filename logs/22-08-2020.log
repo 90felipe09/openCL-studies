@@ -1,0 +1,35 @@
+22-08-2020
+Started working on this because i wanted to know more about how to make use of my GPU for parallel computing. So this git repository will be something like a notebook for study.
+
+Well, i've added a Makefile to easily compile it, created my folders, wrote the readme and tried installing the drivers and SDK for my GPU. I'm coding on my Ubuntu OS and making use of a Geforce GT 610. I had some problems by booting my ubuntu after wrongly installing the SDK before installing the drivers. Sigh, yeah, i'm not that smart.
+
+I'm following my studies with google and a PDF from AMD about openCL. That's a goddamn material.
+
+Now that i've properly installed everthing, i think that i can start coding a hello world.
+
+The Makefile i've copied from the OpenGL study. I'll start testing if i can just specify -lOpenCL as a library and it'll properly link to my object files or if i will need to bring some content to my /lib and /include folders.
+
+It works like the openGL, it will compile a code that will run in the GPU. In openGL this code was a shader. In openCL this code is a Kernel. Kernel is a function that runs inside gpu.
+
+So... i'm bringing the openGL project solution of the shader parser and adapting it to be a kernel parser.
+
+Well... it looks like that i must include the static lib and the header file in my project... I'm downloading an example code from their site and bringing just the openCL.h and it's lib.
+
+Implemented a test code just to see if it can access the platform and the device.
+
+Well, had a problem compiling. The library was installed in my usr/lib/x86_64-linux-gnu/ path. I just made a soft link to a known lib folder for my linker by making "sudo ln -s /usr/lib/x86_64-linux-gnu/libOpenCL.so.1 /usr/lib/libOpenCL.so".
+
+Nice, but i couldn't get platformId. I've got the -1001 error code. It looks like that it couldn't find my /etc/OpenCL/vendors/nvidia.icd.
+
+Well, getting errors with "nvidia-smi": "Failed to initialize NVML: Driver/library version mismatch".
+I will try rebooting my ubuntu and see if it fixes.
+
+The error is different now: "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running."
+
+So... i tried invoking nvcc --version again and it said that it didn't know this command. What is strange. So... i'm installing "sudo apt install nvidia-cuda-toolkit". Ok... now i have nvcc.
+
+Unninstalled all my nvidia drivers and installed the 390 version. Now i've got nvidia-smi to work.
+
+ok... install on linux using the runnable version. it's better.
+
+Yes! finally I made it work! God!
