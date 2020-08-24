@@ -1,6 +1,6 @@
 #include "KernelParser.h"
 
-std::stringstream ParseKernel(const std::string& kernelFile){
+std::string ParseKernel(const std::string& kernelFile){
     std::ifstream stream(kernelFile);
     std::string line;
     std::stringstream ss;
@@ -9,5 +9,5 @@ std::stringstream ParseKernel(const std::string& kernelFile){
         ss << line << "\n";
     }
 
-    return ss;
+    return ss.str();
 }
