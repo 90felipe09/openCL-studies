@@ -1,5 +1,5 @@
 CXX      	:= -c++
-CXXFLAGS 	:= -pedantic-errors -Wall -Wextra -Werror -m64
+CXXFLAGS 	:= -pedantic-errors -Wall -Wextra -m64
 BUILD_DIR   := ./build
 OBJ_DIR  	:= $(BUILD_DIR)/objects
 TARGET   	:= OpenCLApp

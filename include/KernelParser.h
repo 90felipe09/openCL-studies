@@ -2,6 +2,5 @@
 
 #include <fstream>
 #include <sstream>
-#include "CL/cl.h"
 
-std::stringstream ParseKernel(const std::string& kernelFile);
+std::string ParseKernel(const std::string& kernelFile);
