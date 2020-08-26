@@ -1,9 +1,10 @@
 #include <iostream>
+#include <time.h>
 
 #include "KernelParser.h"
 #include "ErrorLogger.h"
 
-#define DATA_SIZE 10
+#define DATA_SIZE 1000
 #define PROBLEM_DIMENSION 1
 
 int main(void){
@@ -56,8 +57,12 @@ int main(void){
     cl_mem vectorA, vectorB, outputVector;
     cl_command_queue command_queue = clCreateCommandQueue(context, deviceId, 0, &execution_error_code);
 
-    float inputData[DATA_SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    float inputData[DATA_SIZE] = {0};
     float results[DATA_SIZE] = {0};
+
+    for(int index = 0; index < DATA_SIZE; index++){
+        inputData[index] = index + 1;
+    }
 
     vectorA = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(float) * DATA_SIZE, NULL, NULL);
     vectorB = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(float) * DATA_SIZE, NULL, NULL);
@@ -71,16 +76,23 @@ int main(void){
     CLCall(clSetKernelArg(kernel, 2, sizeof(cl_mem), &outputVector));
 
     // Execution, tests and memory releases
+    clock_t timeToGPU, timeToCPU;
+
     size_t global = DATA_SIZE;
     CLCall(clEnqueueNDRangeKernel(command_queue, kernel, PROBLEM_DIMENSION, NULL, &global, NULL, 0, NULL, NULL));
+    
+    timeToGPU = clock();
     CLCall(clFinish(command_queue));
+    timeToGPU = clock() - timeToGPU;
+    double timeTakenGPU = ((double) timeToGPU)/CLOCKS_PER_SEC;
 
     CLCall(clEnqueueReadBuffer(command_queue, outputVector, CL_TRUE, 0, sizeof(float) * DATA_SIZE, results, 0, NULL, NULL));
 
-    std::cout << "Output:" << std::endl;
+    std::cout << "GPU Output:" << std::endl;
     for(int i = 0; i < DATA_SIZE; i++){
         std::cout << results[i] << std::endl;
     }
+    std::cout << "GPU time taken:" << timeTakenGPU << std::endl;
 
     clReleaseMemObject(vectorA);
     clReleaseMemObject(vectorB);
